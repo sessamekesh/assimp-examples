@@ -13,9 +13,12 @@ DemoApp* instance_;
 DemoApp::DemoApp(HINSTANCE hInstance, LPCWSTR appName)
 	: device_(nullptr)
 	, context_(nullptr)
+	, swapChain_(nullptr)
+	, viewport_({ 0.f, 0.f, 800.f, 600.f, 0.f, 1.f })
+	, renderTargetView_(nullptr)
 	, hInstance_(hInstance)
 	, hWnd_(nullptr)
-	, windowSize_({ 100, 100, 400, 400 })
+	, windowSize_({ 100, 100, 900, 700 })
 	, appName_(appName)
 {
 	if (instance_)
@@ -175,6 +178,72 @@ bool DemoApp::InitializeD3D()
 		std::cout << "Unable to use debug interface, even on debug build. Sorry." << std::endl;
 	}
 #endif
+
+	//
+	// Swap chain time!
+	//
+	{
+		// DXGI objects must be obtained through a factory. There is a static C-style
+		//  method that can get a factory for us. A factory factory, if you will.
+		// Java? Is that you? What are you doing here in C++?
+		ComPtr<IDXGIFactory2> factory;
+		hr = CreateDXGIFactory2(0x00, IID_PPV_ARGS(&factory));
+		if (FAILED(hr))
+		{
+			std::cerr << "Failed to create DXGI factory, error code: " << hr;
+			return false;
+		}
+
+		DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
+		swapChainDesc.Width = (windowSize_.right - windowSize_.left);
+		swapChainDesc.Height = (windowSize_.bottom - windowSize_.top);
+		swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		swapChainDesc.Stereo = false; // No stereoscopy here!
+		swapChainDesc.SampleDesc.Count = 1;
+		swapChainDesc.SampleDesc.Quality = 0; // Or anti-aliasing
+		swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // We want to use this swap chain for rendering
+		swapChainDesc.BufferCount = 2; // Two buffers - one for looking at, one for drawing to
+		swapChainDesc.Scaling = DXGI_SCALING_STRETCH; // Squash or stretch image to fit the window
+		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+		swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
+		swapChainDesc.Flags = 0x00;
+
+		// This method is the reason I'm using IDXGISwapChain1 instead of IDXGISwapChain,
+		//  and so forth - a swap chain can be created directly for a window, without having
+		//  to query all the resolutions and whatnot. A minor convenience, but when you're
+		//  writing ton of code for a tutorial that's not even about Win32 programming or
+		//  even directly about DirectX programming... is nice.
+		hr = factory->CreateSwapChainForHwnd
+		(
+			device_.Get(), hWnd_, &swapChainDesc,
+			nullptr, nullptr, &swapChain_
+		);
+		if (FAILED(hr))
+		{
+			std::cerr << "Failed to create swap chain! Error code: " << hr;
+			return false;
+		}
+	}
+
+	//
+	// Create the render target view
+	//
+	{
+		ComPtr<ID3D11Texture2D> backBuffer;
+		hr = swapChain_->GetBuffer(0, IID_PPV_ARGS(&backBuffer));
+		if (FAILED(hr))
+		{
+			std::cerr << "Failed to get back buffer pointer, error code: " << hr;
+			return false;
+		}
+
+		hr = device_->CreateRenderTargetView(backBuffer.Get(), nullptr, &renderTargetView_);
+		if (FAILED(hr))
+		{
+			std::cerr << "Failed to create render target view for back buffer. Error: " << hr;
+			return false;
+		}
+	}
 
 	return true;
 }

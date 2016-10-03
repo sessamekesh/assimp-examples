@@ -5,6 +5,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <d3d11.h>
+#include <dxgi1_4.h>
 #include <Windows.h>
 #include <wrl.h>
 using Microsoft::WRL::ComPtr;
@@ -47,6 +48,31 @@ protected:
 	//  buffers to various stages, queueing draw calls, etc.
 	ComPtr<ID3D11DeviceContext> context_;
 	
+	// DXGI is the DirectX Graphics Infrastructure, and it provides a
+	//  lot of really handy utilities for connecting Direct3D to a Win32 window.
+	// Swap chain - stores two color buffers. One is actively being drawn to
+	//  by Direct3D, and the other is being shown to the user. When drawing is
+	//  finished, we switch which one has which job - this shows the next frame
+	//  to the user, and uses the old frame for drawing the subsequent frame.
+	// The naming is horrible. IDXGISwapChain1 has a little bit more features than
+	//  IDXGISwapChain alone. IDXGISwapChain has all of the really important stuff.
+	ComPtr<IDXGISwapChain1> swapChain_;
+
+	// If I had a nickel for every different class that has to be used that only
+	//  represents a rectangle in this project... I'd have two nickles.
+	// The viewport is what part of the surface (in our case, window) that is being
+	//  rendered to in the graphics pipeline. For us, this will be the entire window.
+	// This could feasibly be a smaller part of the window. For example, a mini-map could
+	//  be drawn to a small viewport in the upper-right corner of an RPG style game
+	D3D11_VIEWPORT viewport_;
+
+	// The render target will be a color buffer (i.e., picture in GPU memory) to which
+	//  our frames will be drawn. The actual buffer(s) will be created by the swap chain.
+	// The view is a CPU-side handle, almost a pointer but not quite. When the context
+	//  is given this view, it will know how to find the actual buffer, but on the CPU
+	//  side this can't be deferenced. The CPU does not directly interact with GPU memory.
+	ComPtr<ID3D11RenderTargetView> renderTargetView_;
+
 	//
 	// Win32 Stuff
 	//
