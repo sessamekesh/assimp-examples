@@ -1,0 +1,19 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/AssimpExamples/01 - Setup/Debug/01 - Setup.tlog
+/AssimpExamples/01 - Setup/Debug
+/AssimpExamples/01 - Setup/Release/01 - Setup.tlog
+/AssimpExamples/01 - Setup/x64/Debug
+/AssimpExamples/01 - Setup/x64/Release/01 - Setup.tlog
+/AssimpExamples/02 - Drawing (material only)/cso
+/AssimpExamples/02 - Drawing (material only)/Debug
+/AssimpExamples/02 - Drawing (material only)/x64
+/AssimpExamples/Debug
+/AssimpExamples/Release
+/AssimpExamples/x64
+*.blend1
+*.blend0
+*.opendb
+*.db

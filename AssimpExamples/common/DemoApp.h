@@ -73,6 +73,21 @@ protected:
 	//  side this can't be deferenced. The CPU does not directly interact with GPU memory.
 	ComPtr<ID3D11RenderTargetView> renderTargetView_;
 
+	// Depth stencil state. Part of the configurable (but not programmable) pipeline that
+	//  D3D wants you to have included.
+	ComPtr<ID3D11DepthStencilState> depthStencilState_;
+
+	// Rasterizer state. Just another part of the configurable (but not programmable) pipeline
+	ComPtr<ID3D11RasterizerState> rasterizerState_;
+
+	// Depth stencil buffer - used to make sure we don't draw things on top of each other
+	//  in the wrong order. We're not sure what order the shapes will be drawn in, and it
+	//  definitely won't be back-to-front. Unless we get really really lucky, maybe?
+	// Anyways, this just makes sure that we don't draw background things in front of foreground
+	ComPtr<ID3D11Texture2D> depthStencilBuffer_;
+
+	ComPtr<ID3D11DepthStencilView> depthStencilView_;
+
 	//
 	// Win32 Stuff
 	//

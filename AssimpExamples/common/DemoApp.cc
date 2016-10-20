@@ -16,6 +16,9 @@ DemoApp::DemoApp(HINSTANCE hInstance, LPCWSTR appName)
 	, swapChain_(nullptr)
 	, viewport_({ 0.f, 0.f, 800.f, 600.f, 0.f, 1.f })
 	, renderTargetView_(nullptr)
+	, depthStencilState_(nullptr)
+	, rasterizerState_(nullptr)
+	, depthStencilBuffer_(nullptr)
 	, hInstance_(hInstance)
 	, hWnd_(nullptr)
 	, windowSize_({ 100, 100, 900, 700 })
@@ -103,6 +106,8 @@ bool DemoApp::Run()
 			std::cout << "Failed to render frame!" << std::endl;
 		}
 	}
+
+	return true;
 }
 
 bool DemoApp::InitializeWin32()
@@ -233,16 +238,107 @@ bool DemoApp::InitializeD3D()
 		hr = swapChain_->GetBuffer(0, IID_PPV_ARGS(&backBuffer));
 		if (FAILED(hr))
 		{
-			std::cerr << "Failed to get back buffer pointer, error code: " << hr;
+			std::cerr << "Failed to get back buffer pointer, error code: " << hr << std::endl;
 			return false;
 		}
 
 		hr = device_->CreateRenderTargetView(backBuffer.Get(), nullptr, &renderTargetView_);
 		if (FAILED(hr))
 		{
-			std::cerr << "Failed to create render target view for back buffer. Error: " << hr;
+			std::cerr << "Failed to create render target view for back buffer. Error: " << hr << std::endl;
 			return false;
 		}
+	}
+
+	//
+	// Depth stencil state
+	//
+	{
+		D3D11_DEPTH_STENCIL_DESC depthStencilDesc = { 0 };
+		depthStencilDesc.DepthEnable = true;
+		depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+		depthStencilDesc.StencilEnable = false;
+		depthStencilDesc.StencilWriteMask = 0xFFu;
+		depthStencilDesc.StencilReadMask = 0xFFu;
+
+		depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+		depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		hr = device_->CreateDepthStencilState(&depthStencilDesc, &depthStencilState_);
+		if (FAILED(hr))
+		{
+			std::cerr << "Failed to create depth stencil state! " << hr << std::endl;
+			return false;
+		}
+
+		context_->OMSetDepthStencilState(depthStencilState_.Get(), 1);
+	}
+
+	//
+	// Depth stencil buffer
+	//
+	D3D11_TEXTURE2D_DESC depthBufferDesc = { 0 };
+	depthBufferDesc.Width = (windowSize_.right - windowSize_.left);
+	depthBufferDesc.Height = (windowSize_.bottom - windowSize_.top);
+	depthBufferDesc.MipLevels = 1;
+	depthBufferDesc.ArraySize = 1;
+	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthBufferDesc.SampleDesc.Count = 1;
+	depthBufferDesc.SampleDesc.Quality = 0;
+	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthBufferDesc.CPUAccessFlags = 0x00;
+	depthBufferDesc.MiscFlags = 0x00;
+
+	hr = device_->CreateTexture2D(&depthBufferDesc, nullptr, &depthStencilBuffer_);
+	if (FAILED(hr))
+	{
+		std::cerr << "Failed to create depth stencil buffer " << hr << std::endl;
+		return false;
+	}
+
+	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+	depthStencilViewDesc.Flags = 0x00;
+	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depthStencilViewDesc.Texture2D.MipSlice = 0;
+
+	hr = device_->CreateDepthStencilView(depthStencilBuffer_.Get(), &depthStencilViewDesc, &depthStencilView_);
+	if (FAILED(hr))
+	{
+		std::cerr << "Failed to create depth stencil view: " << hr << std::endl;
+		return false;
+	}
+
+	//
+	// Create the rasterizer state
+	//
+	{
+		D3D11_RASTERIZER_DESC rasterDesc = {};
+		rasterDesc.AntialiasedLineEnable = false;
+		rasterDesc.CullMode = D3D11_CULL_BACK;
+		rasterDesc.FillMode = D3D11_FILL_SOLID;
+		rasterDesc.DepthClipEnable = true;
+		rasterDesc.FrontCounterClockwise = false;
+		rasterDesc.MultisampleEnable = false;
+		rasterDesc.ScissorEnable = false;
+
+		hr = device_->CreateRasterizerState(&rasterDesc, &rasterizerState_);
+		if (FAILED(hr))
+		{
+			std::cerr << "Failed to create rasterizer state! Error: " << hr << std::endl;
+			return false;
+		}
+
+		context_->RSSetState(rasterizerState_.Get());
 	}
 
 	return true;

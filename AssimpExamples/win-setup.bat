@@ -1,0 +1,1 @@
+powershell -Command "Invoke-WebRequest http://www.foo.com/package.zip -OutFile package.zip"
