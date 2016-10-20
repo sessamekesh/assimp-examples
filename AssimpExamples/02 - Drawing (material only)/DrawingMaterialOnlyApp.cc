@@ -30,7 +30,7 @@ bool DrawingMaterialOnlyApp::InitializeApp()
 		MaterialOnlyShader::Material(Color::Palette::Red.withAlpha(0.8f), Color::Palette::Red, Color::Palette::Red.clampAndScale(0.2f)),
 		Vec3(0.f, 2.f, 5.f),
 		Vec3::Ones,
-		0.2f
+		1.1f
 	);
 
 	if (shaderLoaded.get() == false)
@@ -41,7 +41,7 @@ bool DrawingMaterialOnlyApp::InitializeApp()
 
 	MaterialOnlyShader::DirectionalLight sun
 	(
-		Vec3(2.f, -0.6f, 3.f).Normal(),
+		Vec3(2.f, -1.6f, 3.f).Normal(),
 		Color::Palette::CreamIGuess,
 		Color::Palette::CreamIGuess,
 		Color::Palette::CreamIGuess

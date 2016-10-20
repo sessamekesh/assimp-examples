@@ -35,7 +35,5 @@ float4 main(PixelIn pin) : SV_TARGET
 	ComputeDirectionalLight(ObjectMaterial.AmbientColor, ObjectMaterial.DiffuseColor, ObjectMaterial.SpecularColor,
 		DirectionalLight1, normalize(pin.Normal.xyz), normalize(CameraPosition - pin.WorldPosition), ambient, diffuse, specular);
 
-	return float4(1.0, 0.0, 0.0, 1.0);
-	//return ObjectMaterial.AmbientColor;
-	//return saturate(ambient + diffuse + saturate(specular));
+	return saturate(ambient + diffuse + saturate(specular));
 }
