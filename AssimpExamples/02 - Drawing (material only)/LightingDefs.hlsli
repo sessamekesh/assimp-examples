@@ -1,17 +1,17 @@
 struct Material
 {
-	float4 AmbientColor;
-	float4 DiffuseColor;
 	float4 SpecularColor;
+	float4 DiffuseColor;
+	float4 AmbientColor;
 };
 
 struct DirectionalLight
 {
-	float4 AmbientColor;
-	float4 DiffuseColor;
-	float4 SpecularColor;
 	float3 Direction;
 	float1 SpecularPower;
+	float4 SpecularColor;
+	float4 DiffuseColor;
+	float4 AmbientColor;
 };
 
 void ComputeDirectionalLight(float4 ambientColor, float4 diffuseColor, float4 specularColor,

@@ -2,14 +2,16 @@
 #include <Quaternion.h>
 #include <MathExtras.h>
 
+#include <iostream>
+
 namespace sess
 {
 
 FreeCamera::FreeCamera(const Vec3& position, const Vec3& lookAt, const Vec3& up)
 	: position_(position)
-	, forward_((position + lookAt).Normal())
+	, forward_((lookAt - position).Normal())
 	, up_(up.Normal())
-	, right_(Vec3::Cross(position + lookAt, up).Normal())
+	, right_(Vec3::Cross(up, lookAt - position).Normal())
 	, dViewMatrix_({ Matrix::Identity, true })
 {}
 
@@ -35,16 +37,22 @@ void FreeCamera::MoveForward(float distance)
 	// This here makes really intuitive sense to a beginner looking at it
 	// At least, it did for me. Move the position in the direction of forward by some distance "distance"
 	position_ += forward_ * distance;
+
+	dViewMatrix_.isDirty = true;
 }
 
 void FreeCamera::MoveRight(float distance)
 {
 	position_ += right_ * distance;
+
+	dViewMatrix_.isDirty = true;
 }
 
 void FreeCamera::MoveUp(float distance)
 {
 	position_ += up_ * distance;
+
+	dViewMatrix_.isDirty = true;
 }
 
 void FreeCamera::RotateRight(float angle)

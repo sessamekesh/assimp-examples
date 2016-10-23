@@ -33,6 +33,16 @@ Matrix PerspectiveLH(float fovY, float aspect, float nearZ, float farZ)
 
 Matrix LookAtLH(const Vec3 & pos, const Vec3 & lookAt, const Vec3 & up)
 {
+	/**
+	zaxis = normal(At - Eye)
+	xaxis = normal(cross(Up, zaxis))
+	yaxis = cross(zaxis, xaxis)
+
+	xaxis.x           yaxis.x           zaxis.x          0
+	xaxis.y           yaxis.y           zaxis.y          0
+	xaxis.z           yaxis.z           zaxis.z          0
+	-dot(xaxis, eye)  -dot(yaxis, eye)  -dot(zaxis, eye)  1
+	*/
 	Vec3 zaxis = (lookAt - pos).Normal();
 	Vec3 xaxis = Vec3::Cross(up, zaxis).Normal();
 	Vec3 yaxis = Vec3::Cross(zaxis, xaxis);

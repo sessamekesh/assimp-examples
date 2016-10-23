@@ -357,7 +357,7 @@ void MaterialOnlyShader::SetModelTransform(const Matrix& modelTransformation)
 
 void MaterialOnlyShader::SetViewTransform(const Matrix& viewTransform)
 {
-	DVSC_PerFrame.VSC_PerFrame.View = viewTransform;
+	DVSC_PerFrame.VSC_PerFrame.View = viewTransform.Transpose();
 	DVSC_PerFrame.isDirty = true;
 }
 

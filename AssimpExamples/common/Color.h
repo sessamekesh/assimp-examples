@@ -41,6 +41,7 @@ public:
 		const static Color Red;
 		const static Color Brown;
 		const static Color CreamIGuess; // https://blog.xkcd.com/2010/05/03/color-survey-results/
+		const static Color PureWhite;
 	} Palette;
 
 protected:

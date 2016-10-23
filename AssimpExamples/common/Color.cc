@@ -11,6 +11,7 @@ const Color Color::Palette::Indigo = Color::fromHex(0x4bu, 0x00u, 0x82u, 0xffu);
 const Color Color::Palette::Red = Color::fromHex(0xa6u, 0x3du, 0x40u, 0xffu); // #a63d40
 const Color Color::Palette::Brown = Color::fromHex(0x40u, 0x2eu, 0x2au, 0xffu); // #402e2a
 const Color Color::Palette::CreamIGuess = Color::fromHex(0xf9u, 0xb8u, 0x72u, 0xffu); // #e9b872
+const Color Color::Palette::PureWhite = Color::fromHex(0xffu, 0xffu, 0xffu, 0xffu);
 
 Color::Color(float r, float g, float b, float a)
 	: _r(r), _g(g), _b(b), _a(a)
