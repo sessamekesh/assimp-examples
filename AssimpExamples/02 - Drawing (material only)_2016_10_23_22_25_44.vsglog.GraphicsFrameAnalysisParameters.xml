@@ -1,0 +1,26 @@
+<DXOfflineAnalysisConfig>
+  <Variants HardwareCounterMode="Default">
+    <Variant ID="0" CollectAllCounters="true" />
+    <Variant ID="1" CollectAllCounters="true" />
+    <Variant ID="2" CollectAllCounters="true" />
+    <Variant ID="3" CollectAllCounters="true" />
+    <Variant ID="4" CollectAllCounters="true" />
+    <Variant ID="5" CollectAllCounters="true" />
+    <Variant ID="6" CollectAllCounters="true" />
+    <Variant ID="7" CollectAllCounters="true" />
+    <Variant ID="8" CollectAllCounters="true" />
+    <Variant ID="9" CollectAllCounters="true" />
+    <Variant ID="10" CollectAllCounters="true" />
+    <Variant ID="11" CollectAllCounters="true" />
+    <Variant ID="12" CollectAllCounters="true" />
+    <Variant ID="13" CollectAllCounters="true" />
+  </Variants>
+  <Options>
+    <CounterCollectionModePasses>
+      <Pass Mode="PerDrawCall" />
+    </CounterCollectionModePasses>
+    <ForceWarp>false</ForceWarp>
+    <ForceDebugLayers>false</ForceDebugLayers>
+    <ExperimentRepeatCount>5</ExperimentRepeatCount>
+  </Options>
+</DXOfflineAnalysisConfig>

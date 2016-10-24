@@ -60,6 +60,9 @@
     <ClInclude Include="DebugIcosphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AssimpRoadModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawingMaterialOnlyApp.cc">
@@ -96,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DebugIcosphere.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssimpRoadModel.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

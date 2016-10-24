@@ -12,6 +12,7 @@ DrawingMaterialOnlyApp::DrawingMaterialOnlyApp(HINSTANCE appHandle)
 	, camera_(Vec3(0.f, 2.f, 0.f), Vec3(0.f, 2.f, 1.f), Vec3::UnitY)
 	, projMatrix_(PerspectiveLH(Radians(85.f), (windowSize_.right - windowSize_.left) / (float)(windowSize_.bottom - windowSize_.top), 0.1f, 100.f))
 	, debugIcosphere_(nullptr)
+	, roadModel_(nullptr)
 	, inputState_({ /* Initialize to all false */ })
 {}
 
@@ -33,6 +34,14 @@ bool DrawingMaterialOnlyApp::InitializeApp()
 		Vec3::Ones,
 		1.1f
 	);
+
+	Transform roadTransform(Vec3::Zero, Quaternion(Vec3::UnitY, Radians(90.f)) * Quaternion(Vec3::UnitX, Radians(-90.f)), Vec3::Ones);
+	roadModel_ = AssimpRoadModel::LoadFromFile("./assets/road.fbx", device_, roadTransform);
+	if (!roadModel_)
+	{
+		std::cerr << "Failed to load road model, failing initialization" << std::endl;
+		return 0;
+	}
 
 	if (shaderLoaded.get() == false)
 	{
@@ -84,6 +93,8 @@ bool DrawingMaterialOnlyApp::Update(float dt)
 	}
 
 	debugIcosphere_->Update(dt);
+	roadModel_->Update(dt);
+
 	return true;
 }
 
@@ -101,6 +112,7 @@ bool DrawingMaterialOnlyApp::Render()
 	shader_.SetProjectionTransform(projMatrix_);
 
 	debugIcosphere_->Render(context_, &shader_);
+	roadModel_->Render(context_, &shader_);
 
 	swapChain_->Present(1, 0x00);
 
@@ -134,7 +146,6 @@ LRESULT DrawingMaterialOnlyApp::HandleWin32Message(HWND hWnd, UINT msg, WPARAM w
 		case VK_LEFT: inputState_.Left_Pressed = false; break;
 		case VK_RIGHT: inputState_.Right_Pressed = false; break;
 		}
-		break;
 		break;
 	}
 

@@ -5,6 +5,7 @@
 
 #include "MaterialOnlyShader.h"
 #include "DebugIcosphere.h"
+#include "AssimpRoadModel.h"
 
 namespace sess
 {
@@ -30,6 +31,7 @@ private:
 	Matrix projMatrix_;
 
 	std::shared_ptr<DebugMaterialIcosphere> debugIcosphere_;
+	std::shared_ptr<AssimpRoadModel> roadModel_;
 
 	struct
 	{

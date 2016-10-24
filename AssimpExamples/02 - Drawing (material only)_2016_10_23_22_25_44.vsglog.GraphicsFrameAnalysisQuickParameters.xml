@@ -1,0 +1,16 @@
+<DXOfflineAnalysisConfig>
+  <Variants HardwareCounterMode="Default">
+    <Variant ID="0" CollectAllCounters="false">
+      <Counter ID="0" />
+      <Counter ID="1" />
+    </Variant>
+  </Variants>
+  <Options>
+    <CounterCollectionModePasses>
+      <Pass Mode="PerDrawCall" />
+    </CounterCollectionModePasses>
+    <ForceWarp>false</ForceWarp>
+    <ForceDebugLayers>false</ForceDebugLayers>
+    <ExperimentRepeatCount>5</ExperimentRepeatCount>
+  </Options>
+</DXOfflineAnalysisConfig>

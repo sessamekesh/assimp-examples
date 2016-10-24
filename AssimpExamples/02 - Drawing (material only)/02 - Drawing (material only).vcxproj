@@ -121,7 +121,7 @@
       <AdditionalDependencies>assimp.lib;d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
-      <ObjectFileOutput>$(ProjectDir)cso\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput>$(SolutionDir)cso\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -162,7 +162,7 @@
       <AdditionalDependencies>assimp.lib;d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
-      <ObjectFileOutput>$(ProjectDir)cso\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput>$(SolutionDir)cso\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -174,6 +174,7 @@
     <ClInclude Include="..\common\Quaternion.h" />
     <ClInclude Include="..\common\Transform.h" />
     <ClInclude Include="..\common\Vec3.h" />
+    <ClInclude Include="AssimpRoadModel.h" />
     <ClInclude Include="DebugIcosphere.h" />
     <ClInclude Include="DrawingMaterialOnlyApp.h" />
     <ClInclude Include="MaterialOnlyShader.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="..\common\Quaternion.cc" />
     <ClCompile Include="..\common\Transform.cc" />
     <ClCompile Include="..\common\Vec3.cc" />
+    <ClCompile Include="AssimpRoadModel.cc" />
     <ClCompile Include="DebugIcosphere.cc" />
     <ClCompile Include="DrawingMaterialOnlyApp.cc" />
     <ClCompile Include="main.cc" />
