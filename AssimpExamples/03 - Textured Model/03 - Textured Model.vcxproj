@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{397B2A25-FA2A-41B7-86CD-342C5F040C4B}</ProjectGuid>
+    <ProjectGuid>{AFBF7597-9BA1-49D7-ABCD-32A9CFF6634C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My02Drawingmaterialonly</RootNamespace>
+    <RootNamespace>My03TexturedModel</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,25 +71,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>F:\YouTube\Assimp Examples\assimp-examples\AssimpExamples\common;$(IncludePath)</IncludePath>
-    <SourcePath>F:\YouTube\Assimp Examples\assimp-examples\AssimpExamples\common;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\common;$(IncludePath)</IncludePath>
-    <SourcePath>$(ProjectDir)..\common;$(SourcePath)</SourcePath>
-    <LibraryPath>$(ProjectDir)..\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IncludePath>F:\YouTube\Assimp Examples\assimp-examples\AssimpExamples\common;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\YouTube\Assimp Examples\assimp-examples\AssimpExamples\lib\x64;$(LibraryPath)</LibraryPath>
+    <SourcePath>F:\YouTube\Assimp Examples\assimp-examples\AssimpExamples\common;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>F:\YouTube\Assimp Examples\assimp-examples\AssimpExamples\common;$(IncludePath)</IncludePath>
-    <SourcePath>F:\YouTube\Assimp Examples\assimp-examples\AssimpExamples\common;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\common;$(IncludePath)</IncludePath>
-    <SourcePath>$(ProjectDir)..\common;$(SourcePath)</SourcePath>
-    <LibraryPath>$(ProjectDir)..\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IncludePath>F:\YouTube\Assimp Examples\assimp-examples\AssimpExamples\common;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\YouTube\Assimp Examples\assimp-examples\AssimpExamples\lib\x64;$(LibraryPath)</LibraryPath>
+    <SourcePath>F:\YouTube\Assimp Examples\assimp-examples\AssimpExamples\common;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -103,7 +99,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -118,11 +113,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp.lib;d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;assimp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <FxCompile>
-      <ObjectFileOutput>$(SolutionDir)cso\%(Filename).cso</ObjectFileOutput>
-    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -140,7 +132,6 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,11 +150,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp.lib;d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;assimp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <FxCompile>
-      <ObjectFileOutput>$(SolutionDir)cso\%(Filename).cso</ObjectFileOutput>
-    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Color.h" />
@@ -176,9 +164,8 @@
     <ClInclude Include="..\common\Vec3.h" />
     <ClInclude Include="AssimpRoadModel.h" />
     <ClInclude Include="DebugIcosphere.h" />
-    <ClInclude Include="DrawingMaterialOnlyApp.h" />
     <ClInclude Include="MaterialOnlyShader.h" />
-    <ClInclude Include="ShaderUseExampleCube.h" />
+    <ClInclude Include="UVTexturedDemo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Color.cc" />
@@ -191,26 +178,9 @@
     <ClCompile Include="..\common\Vec3.cc" />
     <ClCompile Include="AssimpRoadModel.cc" />
     <ClCompile Include="DebugIcosphere.cc" />
-    <ClCompile Include="DrawingMaterialOnlyApp.cc" />
     <ClCompile Include="main.cc" />
     <ClCompile Include="MaterialOnlyShader.cc" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="MaterialOnlyShader.ps.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="MaterialOnlyShader.vs.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LightingDefs.hlsli" />
+    <ClCompile Include="UVTexturedDemo.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

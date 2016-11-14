@@ -1,4 +1,4 @@
-#include "DrawingMaterialOnlyApp.h"
+#include "UVTexturedDemo.h"
 #include <Color.h>
 
 #include <iostream>
@@ -6,34 +6,34 @@
 namespace sess
 {
 
-DrawingMaterialOnlyApp::DrawingMaterialOnlyApp(HINSTANCE appHandle)
+UVTexturedDemo::UVTexturedDemo(HINSTANCE appHandle)
 	: DemoApp(appHandle, L"Demo - Drawing with Materials Only")
-	, shader_()
+	, materialOnlyShader_()
 	, camera_(Vec3(0.f, 2.f, 0.f), Vec3(0.f, 2.f, 1.f), Vec3::UnitY)
-	, projMatrix_(PerspectiveLH(Radians(85.f), (windowSize_.right - windowSize_.left) / (float)(windowSize_.bottom - windowSize_.top), 0.1f, 100.f))
+	, projMatrix_(PerspectiveLH(Radians(80.f), (windowSize_.right - windowSize_.left) / (float)(windowSize_.bottom - windowSize_.top), 0.1f, 100.f))
 	, debugIcosphere_(nullptr)
 	, roadModel_(nullptr)
 	, inputState_({ /* Initialize to all false */ })
 {}
 
-DrawingMaterialOnlyApp::~DrawingMaterialOnlyApp()
+UVTexturedDemo::~UVTexturedDemo()
 {}
 
 //
 // Overrides
 //
-bool DrawingMaterialOnlyApp::InitializeApp()
+bool UVTexturedDemo::InitializeApp()
 {
-	std::future<bool> shaderLoaded = shader_.Initialize(device_);
+	std::future<bool> shaderLoaded = materialOnlyShader_.Initialize(device_);
 
 	debugIcosphere_ = std::make_shared<DebugMaterialIcosphere>
-	(
-		device_,
-		MaterialOnlyShader::Material(Color::Palette::Red.withAlpha(0.8f), Color::Palette::Red, Color::Palette::Red.clampAndScale(0.9f)),
-		Vec3(0.f, 1.8f, 6.f),
-		Vec3::Ones,
-		1.1f
-	);
+		(
+			device_,
+			MaterialOnlyShader::Material(Color::Palette::Red.withAlpha(0.8f), Color::Palette::Red, Color::Palette::Red.clampAndScale(0.9f)),
+			Vec3(0.f, 1.8f, 6.f),
+			Vec3::Ones,
+			1.1f
+			);
 
 	Transform roadTransform(Vec3::Zero, Quaternion(Vec3::UnitY, Radians(-90.f)) * Quaternion(Vec3::UnitX, Radians(-90.f)), Vec3::Ones);
 	roadModel_ = AssimpRoadModel::LoadFromFile("./assets/road.fbx", device_, roadTransform);
@@ -56,12 +56,12 @@ bool DrawingMaterialOnlyApp::InitializeApp()
 		Color::Palette::PureWhite,
 		Color::Palette::PureWhite.clampAndScale(0.15f)
 	);
-	shader_.SetSunLight(sun);
+	materialOnlyShader_.SetSunLight(sun);
 
 	return true;
 }
 
-bool DrawingMaterialOnlyApp::Update(float dt)
+bool UVTexturedDemo::Update(float dt)
 {
 	const static float ROTATE_SPEED = 1.8f;
 	const static float MOVE_SPEED = 10.f;
@@ -98,28 +98,28 @@ bool DrawingMaterialOnlyApp::Update(float dt)
 	return true;
 }
 
-bool DrawingMaterialOnlyApp::Render()
+bool UVTexturedDemo::Render()
 {
 	float colors[4];
-	Color::Palette::Indigo.packAsFloatArray( colors );
+	Color::Palette::Indigo.packAsFloatArray(colors);
 	context_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
 	context_->ClearRenderTargetView(renderTargetView_.Get(), colors);
 	context_->ClearDepthStencilView(depthStencilView_.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0x00);
 	context_->RSSetViewports(1, &viewport_);
 
-	shader_.SetCameraPosition(camera_.GetPosition());
-	shader_.SetViewTransform(camera_.GetViewMatrix());
-	shader_.SetProjectionTransform(projMatrix_);
+	materialOnlyShader_.SetCameraPosition(camera_.GetPosition());
+	materialOnlyShader_.SetViewTransform(camera_.GetViewMatrix());
+	materialOnlyShader_.SetProjectionTransform(projMatrix_);
 
-	debugIcosphere_->Render(context_, &shader_);
-	roadModel_->Render(context_, &shader_);
+	debugIcosphere_->Render(context_, &materialOnlyShader_);
+	roadModel_->Render(context_, &materialOnlyShader_);
 
 	swapChain_->Present(1, 0x00);
 
 	return true;
 }
 
-LRESULT DrawingMaterialOnlyApp::HandleWin32Message(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT UVTexturedDemo::HandleWin32Message(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	// Handle key presses
 	switch (msg)

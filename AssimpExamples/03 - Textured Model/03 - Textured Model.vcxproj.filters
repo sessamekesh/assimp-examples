@@ -14,13 +14,10 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\common">
-      <UniqueIdentifier>{46b3d700-5a84-4d0d-9798-7e1729551056}</UniqueIdentifier>
+      <UniqueIdentifier>{88ee333d-b202-4163-866c-8c56cc54a759}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\common">
-      <UniqueIdentifier>{d372ad2f-1758-4b67-b9d6-756271e3f74f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\shader">
-      <UniqueIdentifier>{a986ce02-f82c-45ed-85f4-0d38f96d4c88}</UniqueIdentifier>
+      <UniqueIdentifier>{47fad78b-7156-482e-a2bd-a5bd5ec488a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,32 +39,26 @@
     <ClInclude Include="..\common\Quaternion.h">
       <Filter>Header Files\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\common\Vec3.h">
-      <Filter>Header Files\common</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawingMaterialOnlyApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialOnlyShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderUseExampleCube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\common\Transform.h">
       <Filter>Header Files\common</Filter>
     </ClInclude>
-    <ClInclude Include="DebugIcosphere.h">
+    <ClInclude Include="..\common\Vec3.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="UVTexturedDemo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssimpRoadModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DebugIcosphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialOnlyShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DrawingMaterialOnlyApp.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\common\Color.cc">
       <Filter>Source Files\common</Filter>
     </ClCompile>
@@ -86,36 +77,26 @@
     <ClCompile Include="..\common\Quaternion.cc">
       <Filter>Source Files\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\common\Vec3.cc">
-      <Filter>Source Files\common</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\common\Transform.cc">
       <Filter>Source Files\common</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialOnlyShader.cc">
+    <ClCompile Include="..\common\Vec3.cc">
+      <Filter>Source Files\common</Filter>
+    </ClCompile>
+    <ClCompile Include="AssimpRoadModel.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DebugIcosphere.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AssimpRoadModel.cc">
+    <ClCompile Include="main.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="MaterialOnlyShader.vs.hlsl">
-      <Filter>Source Files\shader</Filter>
-    </FxCompile>
-    <FxCompile Include="MaterialOnlyShader.ps.hlsl">
-      <Filter>Source Files\shader</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LightingDefs.hlsli">
-      <Filter>Source Files\shader</Filter>
-    </None>
+    <ClCompile Include="MaterialOnlyShader.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UVTexturedDemo.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -17,3 +17,10 @@
 *.blend0
 *.opendb
 *.db
+*.tlog
+*.log
+*.obj
+*.user
+*.vsglog*
+*.pdb
+*.xml

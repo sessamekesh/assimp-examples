@@ -3,18 +3,17 @@
 #include <DemoApp.h>
 #include <FreeCamera.h>
 
-#include "MaterialOnlyShader.h"
-#include "DebugIcosphere.h"
 #include "AssimpRoadModel.h"
+#include "DebugIcosphere.h"
 
 namespace sess
 {
 
-class DrawingMaterialOnlyApp : public DemoApp
+class UVTexturedDemo : public DemoApp
 {
 public:
-	DrawingMaterialOnlyApp(HINSTANCE appHandle);
-	~DrawingMaterialOnlyApp();
+	UVTexturedDemo(HINSTANCE appHandle);
+	~UVTexturedDemo();
 
 protected:
 	// Inherited via DemoApp
@@ -22,16 +21,16 @@ protected:
 	virtual bool Update(float dt) override;
 	virtual bool Render() override;
 
-	virtual LRESULT CALLBACK HandleWin32Message(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT CALLBACK HandleWin32Message(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
 
 private:
-	MaterialOnlyShader shader_;
+	MaterialOnlyShader materialOnlyShader_;
 	FreeCamera camera_;
-
-	Matrix projMatrix_;
 
 	std::shared_ptr<DebugMaterialIcosphere> debugIcosphere_;
 	std::shared_ptr<AssimpRoadModel> roadModel_;
+
+	Matrix projMatrix_;
 
 	struct
 	{
