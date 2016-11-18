@@ -3,6 +3,7 @@
 #include <DemoApp.h>
 #include <FreeCamera.h>
 
+#include "AssimpManModel.h"
 #include "AssimpRoadModel.h"
 #include "DebugIcosphere.h"
 
@@ -29,6 +30,7 @@ private:
 
 	std::shared_ptr<DebugMaterialIcosphere> debugIcosphere_;
 	std::shared_ptr<AssimpRoadModel> roadModel_;
+	std::shared_ptr<AssimpManModel> manModel_;
 
 	Matrix projMatrix_;
 

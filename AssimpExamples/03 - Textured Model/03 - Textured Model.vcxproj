@@ -162,6 +162,7 @@
     <ClInclude Include="..\common\Quaternion.h" />
     <ClInclude Include="..\common\Transform.h" />
     <ClInclude Include="..\common\Vec3.h" />
+    <ClInclude Include="AssimpManModel.h" />
     <ClInclude Include="AssimpRoadModel.h" />
     <ClInclude Include="DebugIcosphere.h" />
     <ClInclude Include="MaterialOnlyShader.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="..\common\Quaternion.cc" />
     <ClCompile Include="..\common\Transform.cc" />
     <ClCompile Include="..\common\Vec3.cc" />
+    <ClCompile Include="AssimpManModel.cc" />
     <ClCompile Include="AssimpRoadModel.cc" />
     <ClCompile Include="DebugIcosphere.cc" />
     <ClCompile Include="main.cc" />

@@ -9,10 +9,11 @@ namespace sess
 UVTexturedDemo::UVTexturedDemo(HINSTANCE appHandle)
 	: DemoApp(appHandle, L"Demo - Drawing with Materials Only")
 	, materialOnlyShader_()
-	, camera_(Vec3(0.f, 2.f, 0.f), Vec3(0.f, 2.f, 1.f), Vec3::UnitY)
+	, camera_(Vec3(0.f, 2.2f, 0.f), Vec3(0.f, 2.2f, 1.f), Vec3::UnitY)
 	, projMatrix_(PerspectiveLH(Radians(80.f), (windowSize_.right - windowSize_.left) / (float)(windowSize_.bottom - windowSize_.top), 0.1f, 100.f))
 	, debugIcosphere_(nullptr)
 	, roadModel_(nullptr)
+	, manModel_(nullptr)
 	, inputState_({ /* Initialize to all false */ })
 {}
 
@@ -40,6 +41,19 @@ bool UVTexturedDemo::InitializeApp()
 	if (!roadModel_)
 	{
 		std::cerr << "Failed to load road model, failing initialization" << std::endl;
+		return 0;
+	}
+
+	Transform manTransform
+	(
+		Vec3(0.f, 1.1f, 3.f),
+		Quaternion(Vec3::UnitY, Radians(180.f)) * Quaternion(Vec3::UnitX, Radians(-90.f)),
+		Vec3(0.5, 0.5, 0.5)
+	);
+	manModel_ = AssimpManModel::LoadFromFile("./assets/simpleMan2.6.fbx", device_, manTransform);
+	if (!manModel_)
+	{
+		std::cerr << "Failed to load man model, failing initialization" << std::endl;
 		return 0;
 	}
 
@@ -113,6 +127,7 @@ bool UVTexturedDemo::Render()
 
 	debugIcosphere_->Render(context_, &materialOnlyShader_);
 	roadModel_->Render(context_, &materialOnlyShader_);
+	manModel_->Render(context_, &materialOnlyShader_);
 
 	swapChain_->Present(1, 0x00);
 
