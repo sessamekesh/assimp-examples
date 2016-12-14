@@ -24,3 +24,5 @@
 *.vsglog*
 *.pdb
 *.xml
+*.cso
+*.suo

@@ -19,6 +19,9 @@
     <Filter Include="Source Files\common">
       <UniqueIdentifier>{47fad78b-7156-482e-a2bd-a5bd5ec488a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\common\shader">
+      <UniqueIdentifier>{1bc2d83a-e5af-496e-80d6-0e4fdebe7d54}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Color.h">
@@ -58,6 +61,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssimpManModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturedShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,5 +110,25 @@
     <ClCompile Include="AssimpManModel.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\lodepng.cc">
+      <Filter>Source Files\common</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturedShader.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="MaterialOnlyShader.ps.hlsl">
+      <Filter>Source Files\common\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="MaterialOnlyShader.vs.hlsl">
+      <Filter>Source Files\common\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedShader.vs.hlsl">
+      <Filter>Source Files\common\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedShader.ps.hlsl">
+      <Filter>Source Files\common\shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

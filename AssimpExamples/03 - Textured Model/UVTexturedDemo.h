@@ -26,6 +26,7 @@ protected:
 
 private:
 	MaterialOnlyShader materialOnlyShader_;
+	TexturedShader texturedShader_;
 	FreeCamera camera_;
 
 	std::shared_ptr<DebugMaterialIcosphere> debugIcosphere_;

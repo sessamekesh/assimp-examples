@@ -9,6 +9,7 @@ namespace sess
 UVTexturedDemo::UVTexturedDemo(HINSTANCE appHandle)
 	: DemoApp(appHandle, L"Demo - Drawing with Materials Only")
 	, materialOnlyShader_()
+	, texturedShader_()
 	, camera_(Vec3(0.f, 2.2f, 0.f), Vec3(0.f, 2.2f, 1.f), Vec3::UnitY)
 	, projMatrix_(PerspectiveLH(Radians(80.f), (windowSize_.right - windowSize_.left) / (float)(windowSize_.bottom - windowSize_.top), 0.1f, 100.f))
 	, debugIcosphere_(nullptr)
@@ -26,6 +27,7 @@ UVTexturedDemo::~UVTexturedDemo()
 bool UVTexturedDemo::InitializeApp()
 {
 	std::future<bool> shaderLoaded = materialOnlyShader_.Initialize(device_);
+	std::future<bool> textureShaderLoaded = texturedShader_.Initialize(device_);
 
 	debugIcosphere_ = std::make_shared<DebugMaterialIcosphere>
 		(
@@ -46,11 +48,11 @@ bool UVTexturedDemo::InitializeApp()
 
 	Transform manTransform
 	(
-		Vec3(0.f, 1.1f, 3.f),
+		Vec3(0.f, 1.21f, 3.f),
 		Quaternion(Vec3::UnitY, Radians(180.f)) * Quaternion(Vec3::UnitX, Radians(-90.f)),
-		Vec3(0.5, 0.5, 0.5)
+		Vec3(0.55, 0.55, 0.55)
 	);
-	manModel_ = AssimpManModel::LoadFromFile("./assets/simpleMan2.6.fbx", device_, manTransform);
+	manModel_ = AssimpManModel::LoadFromFile("./assets/simpleMan2.6.fbx", "./assets/man-skin.png", device_, context_, manTransform);
 	if (!manModel_)
 	{
 		std::cerr << "Failed to load man model, failing initialization" << std::endl;
@@ -59,7 +61,13 @@ bool UVTexturedDemo::InitializeApp()
 
 	if (shaderLoaded.get() == false)
 	{
-		std::cerr << "Failed to load material only shader in material only app" << std::endl;
+		std::cerr << "Failed to load material only shader in UV demo app" << std::endl;
+		return false;
+	}
+
+	if (textureShaderLoaded.get() == false)
+	{
+		std::cerr << "Failed to load texture shader in UV demo app" << std::endl;
 		return false;
 	}
 
@@ -125,9 +133,13 @@ bool UVTexturedDemo::Render()
 	materialOnlyShader_.SetViewTransform(camera_.GetViewMatrix());
 	materialOnlyShader_.SetProjectionTransform(projMatrix_);
 
+	texturedShader_.SetCameraPosition(camera_.GetPosition());
+	texturedShader_.SetViewTransform(camera_.GetViewMatrix());
+	texturedShader_.SetProjectionTransform(projMatrix_);
+
 	debugIcosphere_->Render(context_, &materialOnlyShader_);
 	roadModel_->Render(context_, &materialOnlyShader_);
-	manModel_->Render(context_, &materialOnlyShader_);
+	manModel_->Render(context_, &texturedShader_);
 
 	swapChain_->Present(1, 0x00);
 

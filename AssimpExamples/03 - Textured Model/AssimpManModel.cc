@@ -1,5 +1,7 @@
 #include "AssimpManModel.h"
 
+#include <lodepng.h>
+
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -10,7 +12,7 @@
 namespace sess
 {
 
-std::shared_ptr<AssimpManModel> AssimpManModel::LoadFromFile(const char* fName, ComPtr<ID3D11Device> d3dDevice, const Transform& transform)
+std::shared_ptr<AssimpManModel> AssimpManModel::LoadFromFile(const char* fName, const char* textureFilename, ComPtr<ID3D11Device> d3dDevice, ComPtr<ID3D11DeviceContext> d3dDeviceContext, const Transform& transform)
 {
 	const aiScene* scene = aiImportFile(fName, aiProcessPreset_TargetRealtime_MaxQuality);
 
@@ -20,6 +22,37 @@ std::shared_ptr<AssimpManModel> AssimpManModel::LoadFromFile(const char* fName, 
 		return nullptr;
 	}
 
+	//
+	// Load image with LodePNG
+	//
+	std::vector<unsigned char> textureData; // Raw pixel data
+	std::uint32_t imageWidth, imageHeight; // Image metadata
+
+	// Decode image with LodePNG
+	std::uint32_t decodeError = lodepng::decode(textureData, imageWidth, imageHeight, textureFilename);
+
+	// Flip all values on Y
+	for (int row = 0; row < imageHeight / 2u; row++)
+	{
+		for (int col = 0; col < imageWidth; col++)
+		{
+			int topPixelId = row * imageWidth + col;
+			int botPixelId = (imageHeight - row - 1) * imageWidth + col;
+			for (int component = 0; component < 4; component++)
+			{
+				unsigned char temp = textureData[topPixelId * 4 + component];
+				textureData[topPixelId * 4 + component] = textureData[botPixelId * 4 + component];
+				textureData[botPixelId * 4 + component] = temp;
+			}
+		}
+	}
+
+	//
+	// ... Done loading image. Lode Vandevenne, you're AWESOME dude
+	//
+
+	TexturedShader::Texture manTexture(d3dDevice, d3dDeviceContext, textureData, imageWidth, imageHeight);
+
 	// Load all meshes and whatnot
 	std::vector<Mesh> meshes;
 	meshes.reserve(scene->mNumMeshes);
@@ -27,7 +60,7 @@ std::shared_ptr<AssimpManModel> AssimpManModel::LoadFromFile(const char* fName, 
 	{
 		aiMesh* mesh = scene->mMeshes[meshIdx];
 
-		std::vector<MaterialOnlyShader::Vertex> verts;
+		std::vector<TexturedShader::Vertex> verts;
 		verts.reserve(mesh->mNumVertices);
 
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -41,7 +74,7 @@ std::shared_ptr<AssimpManModel> AssimpManModel::LoadFromFile(const char* fName, 
 		aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambientColor);
 		aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess);
 
-		MaterialOnlyShader::Material meshMaterial
+		TexturedShader::Material meshMaterial
 		(
 			Color(specularColor.r, specularColor.g, specularColor.b, shininess), // Specular
 			Color(diffuseColor.r, diffuseColor.g, diffuseColor.b, diffuseColor.a), // Diffuse
@@ -52,13 +85,15 @@ std::shared_ptr<AssimpManModel> AssimpManModel::LoadFromFile(const char* fName, 
 		{
 			aiVector3D vert = mesh->mVertices[vertIdx];
 			aiVector3D norm = mesh->mNormals[vertIdx];
+			aiVector3D uv = mesh->mTextureCoords[0][vertIdx];
 
 			verts.push_back
 			(
-				MaterialOnlyShader::Vertex
+				TexturedShader::Vertex
 				(
 					Vec3(vert.x, vert.y, vert.z),
-					Vec3(norm.x, norm.y, norm.z)
+					Vec3(norm.x, norm.y, norm.z),
+					uv.x, uv.y
 				)
 			);
 		}
@@ -72,12 +107,12 @@ std::shared_ptr<AssimpManModel> AssimpManModel::LoadFromFile(const char* fName, 
 			indices.push_back(mesh->mFaces[faceIdx].mIndices[2u]);
 		}
 
-		MaterialOnlyShader::RenderCall call(d3dDevice, verts, indices);
+		TexturedShader::RenderCall call(d3dDevice, verts, indices);
 
 		meshes.push_back({ call, meshMaterial });
 	}
 
-	return std::make_shared<AssimpManModel>(meshes, transform);
+	return std::make_shared<AssimpManModel>(meshes, transform, manTexture);
 }
 
 bool AssimpManModel::Update(float dt)
@@ -85,9 +120,10 @@ bool AssimpManModel::Update(float dt)
 	return true;
 }
 
-bool AssimpManModel::Render(ComPtr<ID3D11DeviceContext> context, MaterialOnlyShader* shader) const
+bool AssimpManModel::Render(ComPtr<ID3D11DeviceContext> context, TexturedShader* shader) const
 {
 	shader->SetModelTransform(transform_.GetTransformMatrix());
+	shader->SetTexture(texture_);
 
 	for (auto&& mesh : meshes_)
 	{
@@ -98,9 +134,10 @@ bool AssimpManModel::Render(ComPtr<ID3D11DeviceContext> context, MaterialOnlySha
 	return true;
 }
 
-AssimpManModel::AssimpManModel(const std::vector<Mesh>& meshes, const Transform& transform)
+AssimpManModel::AssimpManModel(const std::vector<Mesh>& meshes, const Transform& transform, TexturedShader::Texture texture)
 	: meshes_(meshes)
 	, transform_(transform)
+	, texture_(texture)
 {}
 
 };
